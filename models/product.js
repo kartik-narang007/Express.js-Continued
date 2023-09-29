@@ -1,32 +1,36 @@
-const db = require('../util/database');
+//sbse pehle Sequelize module import kro
+const Sequelize = require('sequelize');
 
-const Cart = require('./cart');
+//util me jo object banaya tha data pool vaala vo import kro
+const sequelize = require('../util/database');
 
+//Product naam se new table define kro
 
-module.exports = class Product {
-  constructor(id, title, imageUrl, description, price) {
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
+const Product = sequelize.define('products',{ 
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  title:{
+    type:Sequelize.STRING,
+    allowNull : false
+  },
+  price:{
+    type:Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl:{
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description:{
+    type:Sequelize.STRING,
+    allowNull:false
   }
-
-  save() {
-    return db.execute('INSERT INTO products (title,price,ImageUrl, description) VALUES(?, ?, ?, ?)',
-    [this.title,this.price,this.imageUrl,this.description]);
-  }
-
-  static fetchAll() {
-    return db.execute('SELECT * FROM products');
-  }
+})
+module.exports = Product;
 
 
-  static findById(id){
-      return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
-  }
-
-  static deleteById(id){
-    return db.execute('DELETE * FROM products WHERE products.id = ?', [id]);
-  }
-};
+//table ka naam and ek javascript object dena hota hai define method me
